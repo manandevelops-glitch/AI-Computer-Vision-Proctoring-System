@@ -42,7 +42,7 @@ while True:
 
 
     frame.flags.writeable = True
-    frame = np.ascontiguousarray(frame)
+    frame = np.ascontiguousarray(frame)                          #Read about this!!!
     if results.multi_face_landmarks:
         for face_landmarks in results.multi_face_landmarks:
             # print(face_marks)

@@ -11,7 +11,6 @@ drawing_spec = mp_drawing.DrawingSpec(thickness=1, circle_radius=1)
 mp_face = mp_face_mesh.FaceMesh(min_detection_confidence = 0.5, min_tracking_confidence = 0.5, refine_landmarks=True)
 
 
-
 def if_Person_there():
     pass
 
@@ -43,7 +42,6 @@ while True:
     height, width, _ = frame.shape
     frame.flags.writeable = False
 
-
     rgb_frame = cv.cvtColor(frame, cv.COLOR_BGR2RGB)
 
     results = mp_face.process(rgb_frame)
@@ -56,39 +54,6 @@ while True:
         for mark in enumerate(landmarks.landmark):
 
             eye_Detection(mark)
-
-            
-
-
-
-        # for face_landmarks in enumerate(results.multi_face_landmarks):
-        '''mp_drawing.draw_landmarks(
-            image=frame,
-            landmark_list=face_landmarks,
-            connections=mp_face_mesh.FACEMESH_TESSELATION,
-            landmark_drawing_spec=None,
-            connection_drawing_spec=mp_drawing_styles
-            .get_default_face_mesh_tesselation_style())
-        
-        mp_drawing.draw_landmarks(
-            image=frame,
-            landmark_list=face_landmarks,
-            connections=mp_face_mesh.FACEMESH_CONTOURS,
-            landmark_drawing_spec=None,
-            connection_drawing_spec=mp_drawing_styles
-            .get_default_face_mesh_contours_style())
-        
-        mp_drawing.draw_landmarks(
-            image=frame,
-            landmark_list=face_landmarks,
-            connections=mp_face_mesh.FACEMESH_IRISES,
-            landmark_drawing_spec=None,
-            connection_drawing_spec=mp_drawing_styles
-            .get_default_face_mesh_iris_connections_style())
-            '''
-        
-
-
 
 
     cv.imshow("Webcam", frame)

@@ -15,16 +15,8 @@ mp_face = mp_face_mesh.FaceMesh(min_detection_confidence = 0.5, min_tracking_con
 def if_Person_there():
     pass
 
-def eye_Detection(marks):
-    if mark[0] == 473:            #Right eye
-        print(mark[1].x)
-        x_coor = int(mark[1].x * width)
-        y_coor = int(mark[1].y * height)
-        cv.circle(frame, (x_coor,y_coor), 5, (0, 0, 255), -1)
-    
-    if mark[0] == 468:            #Left eye
-        pass
-    
+def eye_Detection():
+    pass
 
 def no_of_People():
     pass
@@ -40,7 +32,7 @@ while True:
     ret, frame = cam.read()
     # frame = cv.rotate(frame, cv.CAP_PROP_OPENNI2_MIRROR)
     frame = frame[: , ::-1]                     #Mirroring the image
-    height, width, _ = frame.shape
+
     frame.flags.writeable = False
 
 
@@ -48,21 +40,13 @@ while True:
 
     results = mp_face.process(rgb_frame)
 
+
     frame.flags.writeable = True
     frame = np.ascontiguousarray(frame)                          #Read about this!!!
     if results.multi_face_landmarks:
-        landmarks = results.multi_face_landmarks[0]
-
-        for mark in enumerate(landmarks.landmark):
-
-            eye_Detection(mark)
-
-            
-
-
-
-        # for face_landmarks in enumerate(results.multi_face_landmarks):
-        '''mp_drawing.draw_landmarks(
+        for face_landmarks in results.multi_face_landmarks:
+            # print(face_marks)
+            mp_drawing.draw_landmarks(
             image=frame,
             landmark_list=face_landmarks,
             connections=mp_face_mesh.FACEMESH_TESSELATION,
@@ -85,8 +69,8 @@ while True:
             landmark_drawing_spec=None,
             connection_drawing_spec=mp_drawing_styles
             .get_default_face_mesh_iris_connections_style())
-            '''
         
+
 
 
 

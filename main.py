@@ -40,14 +40,13 @@ def no_of_People():
 def unwanted_objects():
     pass
 
-def alert_Management():
+def alert_Management(message):
     pass
 
 
 
 while True:
     ret, frame = cam.read()
-    # frame = cv.rotate(frame, cv.CAP_PROP_OPENNI2_MIRROR)
     frame = frame[: , ::-1]                     #Mirroring the image
     height, width, _ = frame.shape
     frame.flags.writeable = False
@@ -102,6 +101,9 @@ while True:
             
             avg_ratio = (right_eye_ratio+left_eye_ratio)/2
 
+    if(avg_ratio<0.4 or avg_ratio>0.6):
+        cv.putText(frame, "Looking Away!", (100,100), cv.FONT_HERSHEY_COMPLEX, 1, (0,0,255))        #Display a message that the user is looking away
+        alert_Management("Looking away!")
 
                 
 

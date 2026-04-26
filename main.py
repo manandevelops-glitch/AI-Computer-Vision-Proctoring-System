@@ -20,55 +20,19 @@ right_iris_x = 0
 right_iris_y = 0
 right_outer_x = 0
 right_outer_y = 0
+left_inner_x = 0
+left_inner_y = 0
+left_iris_x = 0
+left_iris_y = 0
+left_outer_x = 0
+left_outer_y = 0
+
+right_eye_ratio = 0
+left_eye_ratio = 0
+
 
 def if_Person_there():
     pass
-
-def eye_Detection(marks):
-    if mark[0] in right_eye_landmark_list:                                  #--------------Right eye--------------
-        
-        if mark[0] == right_eye_landmark_list[0]:            
-            right_inner_x = int(mark[1].x * width)                                 #right innerouter x
-            right_inner_y = int(mark[1].y * height)                                #right innerouter y
-            cv.circle(frame, (right_inner_x,right_inner_y), 5, (0, 0, 255), -1)
-            
-        elif mark[0] == right_eye_landmark_list[1]:                       
-            # print(mark[1].x)
-            right_iris_x = int(mark[1].x * width)                                   #right iris x
-            right_iris_y = int(mark[1].y * height)                                  #right iris y
-            cv.circle(frame, (right_iris_x,right_iris_y), 5, (0, 0, 255), -1)
-        elif mark[0] == right_eye_landmark_list[2]:
-            right_outer_x = int(mark[1].x * width)                                  #right outer x
-            right_outer_y = int(mark[1].y * height)                                 #right outer y
-            cv.circle(frame, (right_outer_x,right_outer_y), 5, (0, 0, 255), -1)
-
-
-        # outer-inner
-    
-        # right_eye_ratio = (right_iris_x-right_inner_x)/(right_outer_x-right_inner_x)
-        # print(right_eye_ratio)
-    
-    
-            
-    
-    if mark[0] in left_eye_landmark_list:                                      #--------------left eye--------------
-        if mark[0] == left_eye_landmark_list[0]:            
-            left_inner_x = int(mark[1].x * width)                                   #left inner x
-            left_inner_y = int(mark[1].y * height)                                  #left inner y
-            cv.circle(frame, (left_inner_x,left_inner_y), 5, (0, 0, 255), -1)
-            
-        elif mark[0] == left_eye_landmark_list[1]:                       
-            # print(mark[1].x)
-            left_iris_x = int(mark[1].x * width)                                    #left iris x
-            left_iris_y = int(mark[1].y * height)                                   #left iris y
-            cv.circle(frame, (left_iris_x,left_iris_y), 5, (0, 0, 255), -1)
-        elif mark[0] == left_eye_landmark_list[2]:
-            left_outer_x = int(mark[1].x * width)                                   #left outerinnerouter x
-            left_outer_y = int(mark[1].y * height)                                  #left outerinnerouter y
-            cv.circle(frame, (left_outer_x,left_outer_y), 5, (0, 0, 255), -1)
-
-        # inner - outer
-    
 
 def no_of_People():
     pass
@@ -78,6 +42,7 @@ def unwanted_objects():
 
 def alert_Management():
     pass
+
 
 
 while True:
@@ -95,11 +60,50 @@ while True:
     frame = np.ascontiguousarray(frame)                          #Read about this!!!
     if results.multi_face_landmarks:
         landmarks = results.multi_face_landmarks[0]
-
+        
         for mark in enumerate(landmarks.landmark):          #landmarks start from 0 and the use of indexing
+            if mark[0] in right_eye_landmark_list:                                  #--------------Right eye--------------
+                if mark[0] == right_eye_landmark_list[0]:            
+                    right_inner_x = int(mark[1].x * width)                                 #right innerouter x
+                    right_inner_y = int(mark[1].y * height)                                #right innerouter y
+                    cv.circle(frame, (right_inner_x,right_inner_y), 5, (0, 0, 255), -1)
+                    
+                if mark[0] == right_eye_landmark_list[1]:                       
+                    right_iris_x = int(mark[1].x * width)                                   #right iris x
+                    right_iris_y = int(mark[1].y * height)                                  #right iris y
+                    cv.circle(frame, (right_iris_x,right_iris_y), 5, (0, 0, 255), -1)
 
-            eye_Detection(mark)
+                if mark[0] == right_eye_landmark_list[2]:
+                    right_outer_x = int(mark[1].x * width)                                  #right outer x
+                    right_outer_y = int(mark[1].y * height)                                 #right outer y
+                    cv.circle(frame, (right_outer_x,right_outer_y), 5, (0, 0, 255), -1)
+                
+                right_eye_ratio = (right_iris_x-right_inner_x)/(right_outer_x-right_inner_x)        # outer-inner
+                
+    
+            if mark[0] in left_eye_landmark_list:                                      #--------------left eye--------------
+                if mark[0] == left_eye_landmark_list[0]:            
+                    left_inner_x = int(mark[1].x * width)                                   #left inner x
+                    left_inner_y = int(mark[1].y * height)                                  #left inner y
+                    cv.circle(frame, (left_inner_x,left_inner_y), 5, (0, 0, 255), -1)
+                    
+                elif mark[0] == left_eye_landmark_list[1]:                       
+                    left_iris_x = int(mark[1].x * width)                                    #left iris x
+                    left_iris_y = int(mark[1].y * height)                                   #left iris y
+                    cv.circle(frame, (left_iris_x,left_iris_y), 5, (0, 0, 255), -1)
 
+                elif mark[0] == left_eye_landmark_list[2]:
+                    left_outer_x = int(mark[1].x * width)                                   #left outerinnerouter x
+                    left_outer_y = int(mark[1].y * height)                                  #left outerinnerouter y
+                    cv.circle(frame, (left_outer_x,left_outer_y), 5, (0, 0, 255), -1)
+
+                # inner - outer
+                left_eye_ratio = (left_inner_x-left_iris_x)/(left_inner_x-left_outer_x)
+            
+            avg_ratio = (right_eye_ratio+left_eye_ratio)/2
+
+
+                
 
     cv.imshow("Webcam", frame)
     if cv.waitKey(1) == ord(" "):

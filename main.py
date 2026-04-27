@@ -10,6 +10,7 @@ mp_drawing_styles = mp.solutions.drawing_styles
 drawing_spec = mp_drawing.DrawingSpec(thickness=1, circle_radius=1)
 mp_face = mp_face_mesh.FaceMesh(min_detection_confidence = 0.5, min_tracking_confidence = 0.5, refine_landmarks=True)
 
+face_cascade = cv.CascadeClassifier(r"Haarcascade Frontal Face Default.xml")
 
 left_eye_landmark_list = [133, 468, 33]
 right_eye_landmark_list = [263, 473, 362]
@@ -30,18 +31,24 @@ left_outer_y = 0
 right_eye_ratio = 0
 left_eye_ratio = 0
 
+avg_ratio = 0
 
-def if_Person_there():
-    pass
+def no_of_People(img):
+    faces = face_cascade.detectMultiScale(img)
+    number = len(faces)
 
-def no_of_People():
-    pass
+    if number>1:
+        cv.putText(frame, "More than one person spotted!", (100,100), cv.FONT_HERSHEY_COMPLEX, 1, (0,0,255))
+        alert_Management("More than one person spotted!")
+    elif number == 0:
+        cv.putText(frame, "No one is there!", (100,100), cv.FONT_HERSHEY_COMPLEX, 1, (0,0,255))
+        alert_Management("No one is there!")
 
 def unwanted_objects():
     pass
 
 def alert_Management(message):
-    pass
+    print(message)
 
 
 
@@ -105,7 +112,8 @@ while True:
         cv.putText(frame, "Looking Away!", (100,100), cv.FONT_HERSHEY_COMPLEX, 1, (0,0,255))        #Display a message that the user is looking away
         alert_Management("Looking away!")
 
-                
+    
+    no_of_People(cv.cvtColor(frame, cv.COLOR_BGR2GRAY))
 
     cv.imshow("Webcam", frame)
     if cv.waitKey(1) == ord(" "):
